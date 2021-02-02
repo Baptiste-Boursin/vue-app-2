@@ -1,8 +1,10 @@
 import Vue from 'vue'
+import VueAxios from 'vue-axios'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 
 Vue.use(VueRouter)
+Vue.use(VueAxios)
 
 const routes = [
   {
