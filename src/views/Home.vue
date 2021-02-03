@@ -1,12 +1,11 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <!--<HelloWorld msg="Welcome to Your Vue.js App"/>-->
     <div class="bar">
       <input type="text" class="search" v-model="searchString" placeholder="Rechercher un film ou une série">
       <input type="button"  class="displaySearch" value="Search" v-on:click="searchResult">
       <input type="button" class="displayMovies" value="Movies" v-on:click="setDataForMovies">
       <input type="button" class="displayShows"  value="Shows" v-on:click="listType = 'shows'">
+      <input type="button" class="displayFavList"  value="Favorites" v-on:click="listType = 'favorites'">
     </div>
 
     <li v-if="listType == 'movies'">
@@ -14,32 +13,36 @@
     </li>
 
     <li v-if="listType == 'shows'">
-      <Show :shows="shows"></Show>
+      <Show :shows="shows" :favList="favList" @changeFavori="changeFavori" ></Show>
     </li>
 
     <li v-if="listType == 'search'">
       <Search :searchShowsDetails="searchShowsDetails" :searchMoviesDetails="searchMoviesDetails"></Search>
     </li>
+
+    <li v-if="listType == 'favorites'">
+      <Favorites :favList="favList"></Favorites>
+    </li>
+
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
 import Movie from '@/components/Movie.vue'
 import Show from '@/components/Show.vue'
 import Search from '@/components/Search.vue'
+import Favorites from '@/components/Favorites.vue'
 import axios from 'axios';
-
 
 
 export default {
   name: 'Home',
   components: {
-    HelloWorld,
     Movie,
     Show,
-    Search
+    Search,
+    Favorites
   }, 
   data (){
     return {
@@ -51,7 +54,8 @@ export default {
       shows : [],
       searchList :[],
       searchMoviesDetails :[],
-      searchShowsDetails:[]
+      searchShowsDetails:[],
+      favList : []
     }
   },
   methods:{
@@ -119,6 +123,13 @@ export default {
     },setDataForMovies : function(){
         this.getMovieDetails();
         this.listType = 'movies';
+    },
+    changeFavori(newShow){
+      if(this.favList.includes(newShow)){
+        this.favList.pop(newShow);
+      }else{
+        this.favList.push(newShow);
+      }
     }
   },
   beforeMount(){

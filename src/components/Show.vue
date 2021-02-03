@@ -4,35 +4,55 @@
         <br>
         <ul class="grid">
             <li v-for="show in shows" :key="show.id" >
-                <!-- <img v-bind:src="show.images.poster"/>
-                <p class="title"> Title : {{show.title}}</p>
-                <p> Description : {{show.description}}</p>
-                <p> Seasons : {{show.seasons}}</p>
-                <p> Network : {{show.network}}</p> -->
                 <div class="card">
-                <img :src="show.images.poster" alt="Avatar" style="width:100%">
-                <div class="container">
-                    <h4>{{show.title}}</h4>
-                    <p>{{show.network}}</p>
-                </div>
-                <input type="button" value="Add to your favorite">
+                    <a><img :src="show.images.poster" alt="" style="width:100%"></a>
+                    <div class="container">
+                        <h4>{{show.title}}</h4>
+                        <p>{{show.network}}</p>
+                    </div>
+                    <div v-if="getIsinFavList(show)"> 
+                        <button @click="changeFav(show)"><img src="@/assets/like_heart.png"></button>
+                    </div>
+                     <div v-if="!getIsinFavList(show)"> 
+                        <button @click="changeFav(show)"><img src="@/assets/empty_heart.png"></button>
+                    </div>
+
                 </div>
             </li>
         </ul>
-        
-        <br>
-        
+        <br> 
     </div>
 </template>
 <script>
 
 export default {
     name : "Show",
-    props :["shows"],
+    props :["shows","favList"],
+    data (){
+        return {
+            showDetails :[]
+        }
+        
+    },
+    methods :{
+        changeFav(show){
+            this.$emit("changeFavori",show);
+        },
+        getIsinFavList(show){
+            if(this.favList.includes(show)){
+                return true;
+            }
+            return false;
+        }
+    }
 }
 </script>
 <style scoped>
-
+button{
+    color: white;
+    border: none;
+    background-color: white;
+}
 
 
 

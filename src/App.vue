@@ -41,6 +41,9 @@ ul.grid{
     text-align: left;
 }
 
+li{
+  list-style: none;
+}
 ul.grid li{
     padding: 2px;
     float:left;
