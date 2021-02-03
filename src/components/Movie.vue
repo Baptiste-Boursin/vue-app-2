@@ -1,12 +1,17 @@
 <template>
     <div class="movie">
         <h1> Last movies to discover</h1>
-        <li v-for="movie in moviesDetails" :key="movie.id">
-            <img v-bind:src="movie.poster"/> 
-            <p> Title : {{movie.title}}</p>
-            <p> Production year : {{movie.production_year}}</p>
-            <p> Synopsis : {{movie.synopsis}}</p>
-        </li>
+        <ul class="grid">
+            <li v-for="movie in moviesDetails" :key="movie.id">
+                <div class="card">
+                <img :src="movie.poster" alt="Avatar" style="width:100%">
+                <div class="container">
+                    <h4>{{movie.title}}</h4>
+                </div>
+                <input type="button" value="Add to your favorite">
+                </div>
+            </li>
+        </ul>
         
     </div>
 </template>

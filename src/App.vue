@@ -35,24 +35,34 @@ export default {
   color: #42b983;
 }
 
-li{
-    display: grid;
-    grid-column: 2;
-    grid-row: 2;
-    /* background-color: black;
-    color: azure; */
+ul.grid{
+    list-style: none;
+    width: 100%;
+    text-align: left;
 }
-li img{
-    width:30%;
-    height:auto;
-    display: block;
-    margin-top: 3%;
-    margin-left: auto;
-    margin-right: auto;
-    grid-column: 1;
-    grid-row: 1/5;
+
+ul.grid li{
+    padding: 2px;
+    float:left;
+    width: 20%;
+    margin-left: 5%;
+    margin-right: 5%;
+    margin-top: 10%;
 }
-li p{
-    grid-column: 2; 
+.card {
+  /* Add shadows to create the "card" effect */
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+  transition: 0.3s;
+  height: 100%;
+}
+
+/* On mouse-over, add a deeper shadow */
+.card:hover {
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+}
+
+/* Add some padding inside the card container */
+.container {
+  padding: 2px 16px;
 }
 </style>

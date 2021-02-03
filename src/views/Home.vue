@@ -3,10 +3,10 @@
     <img alt="Vue logo" src="../assets/logo.png">
     <!--<HelloWorld msg="Welcome to Your Vue.js App"/>-->
     <div class="bar">
-                <input type="text" class="search" v-model="searchString" placeholder="Rechercher un film ou une série">
-                <input type="button"  class="displaySearch" value="Search" v-on:click="searchResult">
-                <input type="button" class="displayMovies" value="Movies" v-on:click="setDataForMovies">
-                <input type="button" class="displayShows"  value="Shows" v-on:click="listType = 'shows'">
+      <input type="text" class="search" v-model="searchString" placeholder="Rechercher un film ou une série">
+      <input type="button"  class="displaySearch" value="Search" v-on:click="searchResult">
+      <input type="button" class="displayMovies" value="Movies" v-on:click="setDataForMovies">
+      <input type="button" class="displayShows"  value="Shows" v-on:click="listType = 'shows'">
     </div>
 
     <li v-if="listType == 'movies'">
@@ -18,7 +18,7 @@
     </li>
 
     <li v-if="listType == 'search'">
-      <Search :searchList="searchList"></Search>
+      <Search :searchShowsDetails="searchShowsDetails" :searchMoviesDetails="searchMoviesDetails"></Search>
     </li>
   </div>
 </template>
@@ -49,7 +49,9 @@ export default {
       moviesDetails : [],
       movies : [],
       shows : [],
-      searchList :[]
+      searchList :[],
+      searchMoviesDetails :[],
+      searchShowsDetails:[]
     }
   },
   methods:{
@@ -59,7 +61,6 @@ export default {
           return null;
       }
       queryParams =searchString.trim().toLowerCase();
-
       axios
       .get('https://api.betaseries.com/search/all',{
           params :{
@@ -70,8 +71,37 @@ export default {
       .then(res => {
           this.searchList = res.data
       })
-      this.getMovieDetails();
+      this.getSearchMoviesDetails();
+      this.getSearchShowsDetails();
       return this.listType='search' 
+    },
+    getSearchShowsDetails(){
+       this.searchList.shows.forEach(show => {
+        axios
+        .get('https://api.betaseries.com/shows/display',{
+            params :{
+                id : show.id,
+                key : 'fcbaabfce695'
+            }
+        })
+        .then(res=>{
+            this.searchShowsDetails.push(res.data.show)
+        })
+      });
+    },
+    getSearchMoviesDetails(){
+      this.searchList.movies.forEach(movie => {
+        axios
+        .get('https://api.betaseries.com/movies/movie',{
+            params :{
+                id : movie.id,
+                key : 'fcbaabfce695'
+            }
+        })
+        .then(res=>{
+            this.searchMoviesDetails.push(res.data.movie)
+        })
+      });
     },
     getMovieDetails(){
       this.movies.forEach(movie => {
