@@ -1,7 +1,7 @@
 <template>
     <div>
         <div id="nav">
-            <router-link to="/">Back to the films list</router-link>
+            <router-link to="/"> Back to the films list</router-link>
         </div>
 
         <div>

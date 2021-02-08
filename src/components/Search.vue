@@ -1,5 +1,6 @@
 <template>
-    <div class="search" v-if="searchMoviesDetails.length>0 && searchShowsDetails.length>0">
+    <div class="searchPage" v-if="searchMoviesDetails.length>0 && searchShowsDetails.length>0">
+        <pre>{{favListMovies.length}}</pre>
         <h1> Search Results</h1>
         <div>
             <h2>Movies</h2>
@@ -22,11 +23,11 @@
         </div>
 
         <div>
-            <h2>Show</h2>
+            <h2>Shows</h2>
             <ul class="grid">
             <li v-for="search in searchShowsDetails" :key="search.id">
                 <div class="card">
-                    <img :src="search.images.poster" alt="" style="width:100%">
+                    <img :src="search.images.poster" alt="Logo of the show" style="width:100%">
                     <div class="container">
                         <h4>{{search.title}}</h4>
                         <div v-if="getIsinfavListShow(search)" class="like_button"> 
@@ -47,14 +48,13 @@
 
 export default {
     name : "Search",
-    props :["searchShowsDetails","searchMoviesDetails","favlistMovies","favListShow"],
+    props :["searchShowsDetails","searchMoviesDetails","favListMovies","favListShow"],
     methods : {
         changeFavMovie(movie){
             this.$emit("changeFavoriMovie",movie);
         },
         getIsinfavListMovies(movie){
-            console.log(this.favListMovies)
-            if(this.favListMovies && this.favListMovies.includes(movie)){
+            if(this.favListMovies.includes(movie)){
                 return true;
             }
             return false;
@@ -63,7 +63,8 @@ export default {
             this.$emit("changeFavoriShow",show);
         },
         getIsinfavListShow(show){
-            if( this.favListShow && this.favListShow.includes(show)){
+
+            if(this.favListShow.includes(show)){
                 return true;
             }
             return false;
@@ -73,7 +74,7 @@ export default {
 </script>
 <style scoped>
 
-.search{
+.searchPage{
     display: grid;
     grid-column: 1;
     grid-row: 2;

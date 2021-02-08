@@ -3,7 +3,7 @@
         <h1>Shows to Discover</h1>
         <br>
         <ul class="grid">
-            <li v-for="show in shows" :key="show.id" >
+            <li v-for="show in showsDetails" :key="show.id" >
                 <div class="card">
                     <router-link :to="'serie/'+show.id" ><img :src="show.images.poster" alt="" style="width:100%"></router-link> 
                     <div class="container">
@@ -11,10 +11,10 @@
                         <p>{{show.network}}</p>
                         <div v-if="getIsinfavListShow(show)" class="like_button"> 
                         <button @click="changeFav(show)"><img src="@/assets/like_heart.png"></button>
-                    </div>
-                     <div v-if="!getIsinfavListShow(show)" class="unlike_button"> 
-                        <button @click="changeFav(show)"><img src="@/assets/empty_heart.png"></button>
-                    </div>
+                        </div>
+                        <div v-if="!getIsinfavListShow(show)" class="unlike_button"> 
+                            <button @click="changeFav(show)"><img src="@/assets/empty_heart.png"></button>
+                        </div>
                     </div>
                 </div>
             </li>
@@ -26,7 +26,7 @@
 
 export default {
     name : "Show",
-    props :["shows","favListShow"],
+    props :["showsDetails","favListShow"],
     data (){
         return {}   
     },

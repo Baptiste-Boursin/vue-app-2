@@ -4,12 +4,12 @@
              <h1> Your favorites movies</h1>
             <ul class="grid">
                 <li v-for="movie in favListMovies" :key="movie.id">
-                    <div class="card">
-                    <img :src="movie.poster" alt="Avatar" style="width:100%">
-                    <div class="container">
-                        <h4>{{movie.title}}</h4>
-                    </div>
-                    <input type="button" value="Add to your favorite">
+                        <div class="card">
+                        <img :src="movie.poster" alt="Avatar" style="width:100%">
+                        <div class="container">
+                            <h4>{{movie.title}}</h4>
+                            <button @click="changeFavMovie(movie)"><img src="@/assets/like_heart.png"></button>
+                        </div>
                     </div>
                 </li>
             </ul>
@@ -23,8 +23,8 @@
                         <img :src="show.images.poster" alt="" style="width:100%">
                         <div class="container">
                             <h4>{{show.title}}</h4>
+                            <button @click="changeFavShow(show)"><img src="@/assets/like_heart.png"></button>
                         </div>
-                         <!-- <input type="button" value="Add to your favorite"> -->
                     </div> 
                 </li>
             </ul>
@@ -36,7 +36,15 @@
 
 export default {
     name : "Favorites",
-    props :["favListShow","favListMovies"]
+    props :["favListShow","favListMovies"],
+    methods:{
+        changeFavMovie : function(movie){
+            this.$emit("changeFavoritesMovie",movie);
+        },
+        changeFavShow : function(show){
+            this.$emit("changeFavoritesShow",show);
+        }
+    }
 }
 </script>
 <style scoped>
@@ -45,5 +53,9 @@ export default {
     display: grid;
     grid-column: 1;
     grid-row: 2;
+}
+
+.card{
+    margin-top: 2%;
 }
 </style>

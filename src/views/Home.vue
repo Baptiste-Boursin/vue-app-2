@@ -1,21 +1,24 @@
 <template>
   <div class="home">
-    <div class="bar">
-      <input type="button"  class="displayHome" value="Home" v-on:click="listType='home'">
-      <input type="button" class="displayMovies" value="Films" v-on:click="setDataForMovies">
-      <input type="button" class="displayShows"  value="Shows" v-on:click="listType = 'shows'">
-      <input type="button" class="displayFavList"  value="Favorites" v-on:click="listType = 'favorites'">
-      <div>
-        <input type="text" class="search" v-model="searchString" placeholder="Rechercher un film ou une série">
-        <input type="button"  class="displaySearch" value="Search" v-on:click="searchResult">
-      </div>
+    <div class="navbar">
+        <div class="bar">
+          <input type="button"  class="displayHome" value="Home" v-on:click="listType='home'">
+          <input type="button" class="displayMovies" value="Films" v-on:click="setDataForMovies">
+          <input type="button" class="displayShows"  value="Shows" v-on:click="setDataForShows">
+          <input type="button" class="displayFavList"  value="Favorites" v-on:click="listType = 'favorites'">
+        </div>
+        <div class="search-div">
+          <input type="text" class="search" v-model="searchString" placeholder="Rechercher un film ou une série">
+          <input type="button"  class="displaySearch" value="Search" v-on:click="searchResult">
+        </div>
     </div>
+    
 
     <li v-if="listType == 'home'">
       <h1>Welcome</h1>
       <p>You are on this website to search or discover films and series. </p>
-      <p>To discover 100 movies go here</p>
-      <p>To discover 100 series go here</p>
+      <p>To discover 100 movies go  <a @click="setDataForMovies">here</a></p>
+      <p>To discover 100 series go <a @click="setDataForShows">here</a></p>
       <p>If you want to serahc one, make a search from the search bar</p>
     </li>
 
@@ -24,15 +27,15 @@
     </li>
 
     <li v-if="listType == 'shows'">
-      <Show :shows="shows" :favListShow="favListShow" @changeFavori="changeFavoritesShows" ></Show>
+      <Show :showsDetails="showsDetails" :favListShow="favListShow" @changeFavori="changeFavoritesShows" ></Show>
     </li>
 
     <li v-if="listType == 'search'">
-      <Search :searchShowsDetails="searchShowsDetails" :searchMoviesDetails="searchMoviesDetails" :favlistShow="favListShow" :favlistMovies="favListMovies" @changeFavoriMovie="changeFavoritesMovies" @changeFavoriShow="changeFavoritesShows"></Search>
+      <Search :searchShowsDetails="searchShowsDetails" :searchMoviesDetails="searchMoviesDetails" :favListShow="favListShow" :favListMovies="favListMovies" @changeFavoriMovie="changeFavoritesMovies" @changeFavoriShow="changeFavoritesShows"></Search>
     </li>
 
     <li v-if="listType == 'favorites'">
-      <Favorites :favListShow="favListShow" :favListMovies="favListMovies"></Favorites>
+      <Favorites :favListShow="favListShow" :favListMovies="favListMovies" @changeFavoritesMovie="changeFavoritesMovies" @changeFavoritesShow="changeFavoritesShows"></Favorites>
     </li>
 
   </div>
@@ -62,6 +65,7 @@ export default {
       listType:'home',
       moviesDetails : [],
       movies : [],
+      showsDetails : [],
       shows : [],
       searchList :[],
       searchMoviesDetails :[],
@@ -153,6 +157,27 @@ export default {
       }
         this.listType = 'movies';
     },
+    setDataForShows : function (){
+      console.log(this.showsDetails.length);
+      if(this.showsDetails.length==0){
+        this.getShowsDetails();
+      }
+      this.listType='shows';
+    },
+    async getShowsDetails(){
+      await this.shows.forEach(show=>
+        axios
+        .get('https://api.betaseries.com/shows/display',{
+            params :{
+                id : show.id,
+                key : 'fcbaabfce695'
+            }
+        })
+        .then(res=>{
+            this.showsDetails.push(res.data.show)
+        })
+      );
+    },
     changeFavoritesShows(newShow){
       if(this.favListShow.includes(newShow)){
         var index = this.favListShow.indexOf(newShow);
@@ -206,3 +231,8 @@ export default {
   }
 }
 </script>
+<style scoped>
+a{
+  text-decoration: underline;
+}
+</style>
