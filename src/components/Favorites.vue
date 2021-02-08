@@ -1,7 +1,7 @@
 <template>
     <div class="favorites">
-        <h1> Your favorites movies</h1>
         <div>
+             <h1> Your favorites movies</h1>
             <ul class="grid">
                 <li v-for="movie in favListMovies" :key="movie.id">
                     <div class="card">

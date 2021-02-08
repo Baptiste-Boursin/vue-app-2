@@ -4,17 +4,16 @@
         <ul class="grid">
             <li v-for="movie in moviesDetails" :key="movie.id">
                 <div class="card">
-                    <img :src="movie.poster" alt="" style="width:100%">
+                    <router-link :to="'movie/'+movie.id"><img :src="movie.poster" alt="" style="width:100%"></router-link> 
                     <div class="container">
                         <h4>{{movie.title}}</h4>
-                        <div v-if="getIsinfavListMovies(movie)" class="like_button"> 
+                    <div v-if="getIsinfavListMovies(movie)" class="like_button"> 
                         <button @click="changeFav(movie)"><img src="@/assets/like_heart.png"></button>
                     </div>
                      <div v-if="!getIsinfavListMovies(movie)" class="unlike_button"> 
                         <button @click="changeFav(movie)"><img src="@/assets/empty_heart.png"></button>
                     </div>
                     </div>
-                    
                 </div>
             </li>
         </ul>

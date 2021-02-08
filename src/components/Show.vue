@@ -5,7 +5,7 @@
         <ul class="grid">
             <li v-for="show in shows" :key="show.id" >
                 <div class="card">
-                    <a><img :src="show.images.poster" alt="" style="width:100%"></a>
+                    <router-link :to="'serie/'+show.id" ><img :src="show.images.poster" alt="" style="width:100%"></router-link> 
                     <div class="container">
                         <h4>{{show.title}}</h4>
                         <p>{{show.network}}</p>
@@ -16,8 +16,6 @@
                         <button @click="changeFav(show)"><img src="@/assets/empty_heart.png"></button>
                     </div>
                     </div>
-                    
-
                 </div>
             </li>
         </ul>

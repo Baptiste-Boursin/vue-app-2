@@ -1,12 +1,14 @@
 <template>
   <div class="home">
     <div class="bar">
-      <input type="text" class="search" v-model="searchString" placeholder="Rechercher un film ou une série">
       <input type="button"  class="displayHome" value="Home" v-on:click="listType='home'">
-      <input type="button"  class="displaySearch" value="Search" v-on:click="searchResult">
       <input type="button" class="displayMovies" value="Films" v-on:click="setDataForMovies">
       <input type="button" class="displayShows"  value="Shows" v-on:click="listType = 'shows'">
       <input type="button" class="displayFavList"  value="Favorites" v-on:click="listType = 'favorites'">
+      <div>
+        <input type="text" class="search" v-model="searchString" placeholder="Rechercher un film ou une série">
+        <input type="button"  class="displaySearch" value="Search" v-on:click="searchResult">
+      </div>
     </div>
 
     <li v-if="listType == 'home'">
@@ -26,7 +28,7 @@
     </li>
 
     <li v-if="listType == 'search'">
-      <Search :searchShowsDetails="searchShowsDetails" :searchMoviesDetails="searchMoviesDetails"></Search>
+      <Search :searchShowsDetails="searchShowsDetails" :searchMoviesDetails="searchMoviesDetails" :favlistShow="favListShow" :favlistMovies="favListMovies" @changeFavoriMovie="changeFavoritesMovies" @changeFavoriShow="changeFavoritesShows"></Search>
     </li>
 
     <li v-if="listType == 'favorites'">
@@ -83,12 +85,13 @@ export default {
           }
       })
       .then(res => {
-          this.searchList = res.data
+        console.log(res.data)
+          this.searchList = res.data,
+          this.getSearchMoviesDetails(),
+          this.getSearchShowsDetails(),
+          this.listType='search'
       })
-      this.getSearchMoviesDetails();
-      this.getSearchShowsDetails();
-      this.listType='search' 
-      console.log(this.listType)
+      
     },
     getSearchShowsDetails(){
        this.searchList.shows.forEach(show => {
@@ -100,7 +103,8 @@ export default {
             }
         })
         .then(res=>{
-            this.searchShowsDetails.push(res.data.show)
+            this.searchShowsDetails.push(res.data.show),
+            console.log(this.searchShowsDetails)
         })
       });
     },
@@ -114,7 +118,8 @@ export default {
             }
         })
         .then(res=>{
-            this.searchMoviesDetails.push(res.data.movie)
+            this.searchMoviesDetails.push(res.data.movie),
+            console.log(this.searchMoviesDetails)
         })
       });
     },
@@ -133,9 +138,10 @@ export default {
       });
     },
     setDataForMovies : function(){
+      if(this.moviesDetails.length==0){
         this.getMovieDetails();
+      }
         this.listType = 'movies';
-        console.log(this.listType)
     },
     changeFavoritesShows(newShow){
       if(this.favListShow.includes(newShow)){
@@ -170,8 +176,11 @@ export default {
       .then(res => {
           this.movies = res.data.movies
       })
+      .catch( error=>{
+        alert("Erreur de chargement des données.")
+      })
       
-      axios
+     axios
       .get('https://api.betaseries.com/shows/discover',{
           params:{
               key: 'fcbaabfce695'
@@ -179,6 +188,9 @@ export default {
       })
       .then(res => {
           this.shows = res.data.shows
+      })
+      .catch(error =>{
+        alert("Erreur de chargement des données.")
       })
   }
 }
