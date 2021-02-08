@@ -28,9 +28,7 @@ export default {
     name : "Show",
     props :["shows","favListShow"],
     data (){
-        return {
-            
-        }   
+        return {}   
     },
     methods :{
         changeFav(show){

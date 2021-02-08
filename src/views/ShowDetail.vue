@@ -1,7 +1,7 @@
 <template>
     <div class="detail">
         <div id="nav">
-            <router-link to="/">Back to the series list</router-link>
+            <router-link to="/?tab=shows">Back to the series list</router-link>
         </div>
 
         <div> 

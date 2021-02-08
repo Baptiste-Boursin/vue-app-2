@@ -1,5 +1,5 @@
 <template>
-    <div class="search">
+    <div class="search" v-if="searchMoviesDetails.length>0 && searchShowsDetails.length>0">
         <h1> Search Results</h1>
         <div>
             <h2>Movies</h2>
@@ -53,8 +53,8 @@ export default {
             this.$emit("changeFavoriMovie",movie);
         },
         getIsinfavListMovies(movie){
-            console.log(movie);
-            if(this.favListMovies.includes(movie)){
+            console.log(this.favListMovies)
+            if(this.favListMovies && this.favListMovies.includes(movie)){
                 return true;
             }
             return false;
@@ -63,7 +63,7 @@ export default {
             this.$emit("changeFavoriShow",show);
         },
         getIsinfavListShow(show){
-            if(this.favListShow.includes(show)){
+            if( this.favListShow && this.favListShow.includes(show)){
                 return true;
             }
             return false;

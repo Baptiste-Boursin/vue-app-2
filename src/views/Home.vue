@@ -70,31 +70,42 @@ export default {
       favListMovies :[]
     }
   },
+  watch:{
+     changeComponents(){
+       
+      if(this.$route.query$.tab == 'shows'){
+        this.listType='shows';
+      }
+    }
+  },
   methods:{
-    searchResult(){
-      let searchString = this.searchString,queryParams;
+    async searchResult(){
+      this.searchList = [];
+      this.searchMoviesDetails = [];
+      this.searchShowsDetails = [];
+      let searchString = this.searchString;
       if(!searchString){
           return null;
       }
-      queryParams =searchString.trim().toLowerCase();
-      axios
+      
+      const results= await axios
       .get('https://api.betaseries.com/search/all',{
           params :{
-              query : queryParams,
+              query : searchString.trim().toLowerCase(),
               key : 'fcbaabfce695'
           }
       })
-      .then(res => {
-        console.log(res.data)
-          this.searchList = res.data,
-          this.getSearchMoviesDetails(),
-          this.getSearchShowsDetails(),
-          this.listType='search'
-      })
+      this.searchList = results.data;
+      
+          
+      await this.getSearchMoviesDetails(),
+      await this.getSearchShowsDetails(),
+      this.listType='search'
+      
       
     },
-    getSearchShowsDetails(){
-       this.searchList.shows.forEach(show => {
+    async getSearchShowsDetails(){
+      await  this.searchList.shows.forEach(show => {
         axios
         .get('https://api.betaseries.com/shows/display',{
             params :{
@@ -103,13 +114,13 @@ export default {
             }
         })
         .then(res=>{
-            this.searchShowsDetails.push(res.data.show),
-            console.log(this.searchShowsDetails)
+            this.searchShowsDetails.push(res.data.show)
+            
         })
       });
     },
-    getSearchMoviesDetails(){
-      this.searchList.movies.forEach(movie => {
+    async getSearchMoviesDetails(){
+      await this.searchList.movies.forEach(movie => {
         axios
         .get('https://api.betaseries.com/movies/movie',{
             params :{
@@ -118,8 +129,7 @@ export default {
             }
         })
         .then(res=>{
-            this.searchMoviesDetails.push(res.data.movie),
-            console.log(this.searchMoviesDetails)
+            this.searchMoviesDetails.push(res.data.movie)
         })
       });
     },
@@ -163,7 +173,8 @@ export default {
       }else{
         this.favListMovies.push(newMovie);
       }
-    }
+    },
+   
   },
   beforeMount(){
       axios
