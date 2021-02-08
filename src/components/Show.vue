@@ -9,13 +9,14 @@
                     <div class="container">
                         <h4>{{show.title}}</h4>
                         <p>{{show.network}}</p>
-                    </div>
-                    <div v-if="getIsinFavList(show)"> 
+                        <div v-if="getIsinfavListShow(show)" class="like_button"> 
                         <button @click="changeFav(show)"><img src="@/assets/like_heart.png"></button>
                     </div>
-                     <div v-if="!getIsinFavList(show)"> 
+                     <div v-if="!getIsinfavListShow(show)" class="unlike_button"> 
                         <button @click="changeFav(show)"><img src="@/assets/empty_heart.png"></button>
                     </div>
+                    </div>
+                    
 
                 </div>
             </li>
@@ -27,19 +28,18 @@
 
 export default {
     name : "Show",
-    props :["shows","favList"],
+    props :["shows","favListShow"],
     data (){
         return {
-            showDetails :[]
-        }
-        
+            
+        }   
     },
     methods :{
         changeFav(show){
             this.$emit("changeFavori",show);
         },
-        getIsinFavList(show){
-            if(this.favList.includes(show)){
+        getIsinfavListShow(show){
+            if(this.favListShow.includes(show)){
                 return true;
             }
             return false;
@@ -48,13 +48,4 @@ export default {
 }
 </script>
 <style scoped>
-button{
-    color: white;
-    border: none;
-    background-color: white;
-}
-
-
-
-
 </style>

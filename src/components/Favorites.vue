@@ -1,9 +1,9 @@
 <template>
     <div class="favorites">
-        <!-- <h1> Your favorites movies</h1>
+        <h1> Your favorites movies</h1>
         <div>
             <ul class="grid">
-                <li v-for="movie in favList" :key="movie.id">
+                <li v-for="movie in favListMovies" :key="movie.id">
                     <div class="card">
                     <img :src="movie.poster" alt="Avatar" style="width:100%">
                     <div class="container">
@@ -13,12 +13,12 @@
                     </div>
                 </li>
             </ul>
-        </div> -->
+        </div>
 
         <div>
             <h1>Your favorites shows</h1>
             <ul class="grid">
-                <li v-for="show in favList" :key="show.id">
+                <li v-for="show in favListShow" :key="show.id">
                     <div class="card">
                         <img :src="show.images.poster" alt="" style="width:100%">
                         <div class="container">
@@ -36,7 +36,7 @@
 
 export default {
     name : "Favorites",
-    props :["favList"]
+    props :["favListShow","favListMovies"]
 }
 </script>
 <style scoped>

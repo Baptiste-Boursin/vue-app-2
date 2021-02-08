@@ -2,18 +2,27 @@
   <div class="home">
     <div class="bar">
       <input type="text" class="search" v-model="searchString" placeholder="Rechercher un film ou une série">
+      <input type="button"  class="displayHome" value="Home" v-on:click="listType='home'">
       <input type="button"  class="displaySearch" value="Search" v-on:click="searchResult">
-      <input type="button" class="displayMovies" value="Movies" v-on:click="setDataForMovies">
+      <input type="button" class="displayMovies" value="Films" v-on:click="setDataForMovies">
       <input type="button" class="displayShows"  value="Shows" v-on:click="listType = 'shows'">
       <input type="button" class="displayFavList"  value="Favorites" v-on:click="listType = 'favorites'">
     </div>
 
+    <li v-if="listType == 'home'">
+      <h1>Welcome</h1>
+      <p>You are on this website to search or discover films and series. </p>
+      <p>To discover 100 movies go here</p>
+      <p>To discover 100 series go here</p>
+      <p>If you want to serahc one, make a search from the search bar</p>
+    </li>
+
     <li v-if="listType == 'movies'">
-      <Movie :moviesDetails="moviesDetails"></Movie>
+      <Movie :moviesDetails="moviesDetails" :favListMovies="favListMovies" @changeFavori="changeFavoritesMovies"></Movie>
     </li>
 
     <li v-if="listType == 'shows'">
-      <Show :shows="shows" :favList="favList" @changeFavori="changeFavori" ></Show>
+      <Show :shows="shows" :favListShow="favListShow" @changeFavori="changeFavoritesShows" ></Show>
     </li>
 
     <li v-if="listType == 'search'">
@@ -21,7 +30,7 @@
     </li>
 
     <li v-if="listType == 'favorites'">
-      <Favorites :favList="favList"></Favorites>
+      <Favorites :favListShow="favListShow" :favListMovies="favListMovies"></Favorites>
     </li>
 
   </div>
@@ -55,11 +64,12 @@ export default {
       searchList :[],
       searchMoviesDetails :[],
       searchShowsDetails:[],
-      favList : []
+      favListShow: [],
+      favListMovies :[]
     }
   },
   methods:{
-    searchResult : function(){
+    searchResult(){
       let searchString = this.searchString,queryParams;
       if(!searchString){
           return null;
@@ -77,7 +87,8 @@ export default {
       })
       this.getSearchMoviesDetails();
       this.getSearchShowsDetails();
-      return this.listType='search' 
+      this.listType='search' 
+      console.log(this.listType)
     },
     getSearchShowsDetails(){
        this.searchList.shows.forEach(show => {
@@ -120,15 +131,31 @@ export default {
             this.moviesDetails.push(res.data.movie)
         })
       });
-    },setDataForMovies : function(){
+    },
+    setDataForMovies : function(){
         this.getMovieDetails();
         this.listType = 'movies';
+        console.log(this.listType)
     },
-    changeFavori(newShow){
-      if(this.favList.includes(newShow)){
-        this.favList.pop(newShow);
+    changeFavoritesShows(newShow){
+      if(this.favListShow.includes(newShow)){
+        var index = this.favListShow.indexOf(newShow);
+        if(index>-1){
+          this.favListShow.splice(index,1);
+        }
       }else{
-        this.favList.push(newShow);
+        this.favListShow.push(newShow);
+      }
+    },
+    changeFavoritesMovies(newMovie){
+      if(this.favListMovies.includes(newMovie)){
+        var index = this.favListMovies.indexOf(newMovie);
+        if(index>-1){
+          this.favListMovies.splice(index,1);
+          
+        }
+      }else{
+        this.favListMovies.push(newMovie);
       }
     }
   },
