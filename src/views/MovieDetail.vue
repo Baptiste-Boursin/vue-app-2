@@ -1,7 +1,7 @@
 <template>
     <div>
         <div id="nav">
-            <router-link to="/"> Back to the films list</router-link>
+            <router-link to="/"> Back to home</router-link>
         </div>
 
         <div>
@@ -59,7 +59,6 @@ export default {
 
 <style scoped>
 a{
-    text-decoration: none;
     color: black;
 }
 </style>

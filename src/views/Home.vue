@@ -4,22 +4,21 @@
         <div class="bar">
           <input type="button"  class="displayHome" value="Home" v-on:click="listType='home'">
           <input type="button" class="displayMovies" value="Films" v-on:click="setDataForMovies">
-          <input type="button" class="displayShows"  value="Shows" v-on:click="setDataForShows">
+          <input type="button" class="displayShows"  value="Series" v-on:click="setDataForShows">
           <input type="button" class="displayFavList"  value="Favorites" v-on:click="listType = 'favorites'">
         </div>
         <div class="search-div">
           <input type="text" class="search" v-model="searchString" placeholder="Rechercher un film ou une série">
           <input type="button"  class="displaySearch" value="Search" v-on:click="searchResult">
         </div>
-    </div>
-    
+    </div>    
 
     <li v-if="listType == 'home'">
       <h1>Welcome</h1>
       <p>You are on this website to search or discover films and series. </p>
       <p>To discover 100 movies go  <a @click="setDataForMovies">here</a></p>
       <p>To discover 100 series go <a @click="setDataForShows">here</a></p>
-      <p>If you want to serahc one, make a search from the search bar</p>
+      <p>If you want to search a movie or a serie, make a search from the search bar</p>
     </li>
 
     <li v-if="listType == 'movies'">
@@ -31,7 +30,7 @@
     </li>
 
     <li v-if="listType == 'search'">
-      <Search :searchShowsDetails="searchShowsDetails" :searchMoviesDetails="searchMoviesDetails" :favListShow="favListShow" :favListMovies="favListMovies" @changeFavoriMovie="changeFavoritesMovies" @changeFavoriShow="changeFavoritesShows"></Search>
+      <Search :searchShowsDetails="searchShowsDetails" :searchMoviesDetails="searchMoviesDetails" ></Search>
     </li>
 
     <li v-if="listType == 'favorites'">
@@ -72,14 +71,6 @@ export default {
       searchShowsDetails:[],
       favListShow: [],
       favListMovies :[]
-    }
-  },
-  watch:{
-     changeComponents(){
-       
-      if(this.$route.query$.tab == 'shows'){
-        this.listType='shows';
-      }
     }
   },
   methods:{
@@ -199,7 +190,13 @@ export default {
         this.favListMovies.push(newMovie);
       }
     },
-   
+    changeComponents(){
+      console.log(this.$route.query.tab);
+      if(this.$route.query$.tab == 'shows'){
+        this.listType='shows';
+      }
+      return true;
+    }
   },
   beforeMount(){
       axios
